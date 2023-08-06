@@ -1,10 +1,7 @@
-import { useState } from 'react';
 import ListBox from './ListBox';
 import WatchedBox from './WatchedBox';
 
-const Main = ({ tempMovieData, tempWatchedData }) => {
-  const [movies, setMovies] = useState(tempMovieData);
-
+const Main = ({ movies, tempWatchedData }) => {
   return (
     <main className='main'>
       <ListBox movies={movies} />
