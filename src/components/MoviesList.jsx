@@ -1,6 +1,6 @@
 import Movie from './Movie';
 
-const MoviesList = ({ movies }) => {
+const MovieList = ({ movies }) => {
   return (
     <ul className='list'>
       {movies?.map(movie => (
@@ -10,4 +10,4 @@ const MoviesList = ({ movies }) => {
   );
 };
 
-export default MoviesList;
+export default MovieList;
