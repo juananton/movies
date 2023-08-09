@@ -29,7 +29,7 @@ const StarRating = ({
     lineHeight: '1',
     margin: '0',
     color,
-    fontSize: `${size * 0.875}px`,
+    fontSize: `${size * 0.75}px`,
   };
 
   function handleRating(rating) {
