@@ -29,6 +29,17 @@ const MovieDetails = ({ selectedId, setSelectedId, setWatched, watched }) => {
     setSelectedId(null);
   };
 
+  useEffect(() => {
+    const callback = e => {
+      if (e.code === 'Escape') {
+        handleClose();
+      }
+    };
+    document.addEventListener('keydown', callback);
+
+    return () => document.removeEventListener('Keydown', callback);
+  });
+
   const handleAdd = () => {
     const newWatchedMovie = {
       imdbID: selectedId,
