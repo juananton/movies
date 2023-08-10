@@ -3,10 +3,15 @@ import { KEY } from '../App';
 import Loader from './Loader';
 import StarRating from './StarRating';
 
-const MovieDetails = ({ selectedId, setSelectedId }) => {
+const MovieDetails = ({ selectedId, setSelectedId, setWatched, watched }) => {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [userRating, setUserRating] = useState('');
+
+  const isWatched = watched.map(movie => movie.imdbID).includes(selectedId);
+  const watchedUserRating = watched.find(
+    movie => movie.imdbID === selectedId
+  )?.userRating;
 
   const {
     Title: title,
@@ -19,6 +24,24 @@ const MovieDetails = ({ selectedId, setSelectedId }) => {
     Director: director,
     Genre: genre,
   } = movie;
+
+  const handleClose = () => {
+    setSelectedId(null);
+  };
+
+  const handleAdd = () => {
+    const newWatchedMovie = {
+      imdbID: selectedId,
+      title,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(' ').at(0)),
+      userRating,
+    };
+
+    setWatched(watched => [...watched, newWatchedMovie]);
+    handleClose();
+  };
 
   useEffect(() => {
     const fetchtMovieDetails = async () => {
@@ -44,7 +67,7 @@ const MovieDetails = ({ selectedId, setSelectedId }) => {
       ) : (
         <>
           <header>
-            <button className='btn-back' onClick={() => setSelectedId(null)}>
+            <button className='btn-back' onClick={handleClose}>
               &larr;
             </button>
             <img src={poster} alt={`Poster of ${movie} movie`} />
@@ -62,7 +85,17 @@ const MovieDetails = ({ selectedId, setSelectedId }) => {
           </header>
           <section>
             <div className='rating'>
-              <StarRating maxRating={10} />
+              {!isWatched ? (
+                <StarRating maxRating={10} onSetRating={setUserRating} />
+              ) : (
+                <p>You rated this movie with {watchedUserRating} ⭐️</p>
+              )}
+
+              {userRating && (
+                <button className='btn-add' onClick={handleAdd}>
+                  Add to list
+                </button>
+              )}
             </div>
             <p>
               <em>{plot}</em>

@@ -73,6 +73,8 @@ export default function App() {
             <MovieDetails
               selectedId={selectedId}
               setSelectedId={setSelectedId}
+              watched={watched}
+              setWatched={setWatched}
             />
           ) : (
             <>
