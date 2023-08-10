@@ -60,6 +60,13 @@ const MovieDetails = ({ selectedId, setSelectedId, setWatched, watched }) => {
     fetchtMovieDetails();
   }, [selectedId]);
 
+  useEffect(() => {
+    if (!title) return;
+    document.title = `Movie: ${title}`;
+
+    return () => (document.title = 'Movies App');
+  }, [title]);
+
   return (
     <div className='details'>
       {isLoading ? (
