@@ -21,6 +21,10 @@ export default function App() {
   const [error, setError] = useState('');
   const [selectedId, setSelectedId] = useState(null);
 
+  const handleClose = () => {
+    setSelectedId(null);
+  };
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -57,7 +61,7 @@ export default function App() {
       setError('');
       return;
     }
-
+    handleClose();
     fetchMovies();
     return () => controller.abort();
   }, [query]);
@@ -80,7 +84,7 @@ export default function App() {
           {selectedId ? (
             <MovieDetails
               selectedId={selectedId}
-              setSelectedId={setSelectedId}
+              handleClose={handleClose}
               watched={watched}
               setWatched={setWatched}
             />

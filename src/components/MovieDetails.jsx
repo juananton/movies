@@ -3,7 +3,7 @@ import { KEY } from '../App';
 import Loader from './Loader';
 import StarRating from './StarRating';
 
-const MovieDetails = ({ selectedId, setSelectedId, setWatched, watched }) => {
+const MovieDetails = ({ selectedId, handleClose, setWatched, watched }) => {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState('');
@@ -24,10 +24,6 @@ const MovieDetails = ({ selectedId, setSelectedId, setWatched, watched }) => {
     Director: director,
     Genre: genre,
   } = movie;
-
-  const handleClose = () => {
-    setSelectedId(null);
-  };
 
   useEffect(() => {
     const callback = e => {
