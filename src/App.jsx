@@ -10,17 +10,14 @@ import NumResults from './components/NumResults';
 import Search from './components/Search';
 import WatchedMoviesList from './components/WatchedMoviesList';
 import WatchedSummary from './components/WatchedSummary';
+import { useLocalStorageState } from './lib/useLocalStorageState';
 import { useMovies } from './lib/useMovies';
 
 export default function App() {
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState(null);
   const { movies, isLoading, error } = useMovies(query);
-
-  const [watched, setWatched] = useState(() => {
-    const storedValue = localStorage.getItem('watched');
-    return JSON.parse(storedValue);
-  });
+  const [watched, setWatched] = useLocalStorageState([], 'watched');
 
   function handleClose() {
     setSelectedId(null);
