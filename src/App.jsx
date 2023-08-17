@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Box from './components/Box';
 import ErrorMessage from './components/ErrorMessage';
 import Loader from './components/Loader';
@@ -10,64 +10,21 @@ import NumResults from './components/NumResults';
 import Search from './components/Search';
 import WatchedMoviesList from './components/WatchedMoviesList';
 import WatchedSummary from './components/WatchedSummary';
-
-export const KEY = '48dc1f25';
+import { useMovies } from './lib/useMovies';
 
 export default function App() {
   const [query, setQuery] = useState('');
-  const [movies, setMovies] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+  const { movies, isLoading, error } = useMovies(query);
+
   const [watched, setWatched] = useState(() => {
     const storedValue = localStorage.getItem('watched');
     return JSON.parse(storedValue);
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [selectedId, setSelectedId] = useState(null);
 
-  const handleClose = () => {
+  function handleClose() {
     setSelectedId(null);
-  };
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchMovies = async () => {
-      try {
-        setIsLoading(true);
-        setError('');
-
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-          { signal: controller.signal }
-        );
-
-        if (!res.ok) throw new Error('Something when wrong');
-
-        const data = await res.json();
-
-        if (data.Response === 'False') throw new Error('Movie not found');
-
-        setMovies(data.Search);
-        setError('');
-      } catch (err) {
-        setError(err.message);
-        if (err.name !== 'AbortError') {
-          setError(err.message);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (query.length < 3) {
-      setMovies([]);
-      setError('');
-      return;
-    }
-    handleClose();
-    fetchMovies();
-    return () => controller.abort();
-  }, [query]);
+  }
 
   return (
     <>
